@@ -34,7 +34,7 @@ module Yargui
       @lines  = true # draw the grid lines or not?
       @color  = Color.new(255,255,255)
       # Color to draw the grid with
-      @back1  = Color.new(0,0,0)
+      @back1  = Color.new(64,64,64)
       @back2  = Color.new(127,127,127)
       # Background colors of grid
       self.setBackground(@back)
@@ -75,14 +75,17 @@ module Yargui
 
     def paint_grid(g)
       g.setPaint(@color)
-      for i in (1..@grid.wide)
+      for i in (0..@grid.wide)
         x =  i * @factor
         g.drawLine(x , 0, x, @high)
-      end
-
-      for j in (1..@grid.high)
-        y =  j * @factor
-        g.drawLine(0, y, @wide, y)
+        for j in (0..@grid.high)
+          y =  j * @factor
+          g.drawLine(0, y, @wide, y)
+          @grad = GradientPaint.new(x , y, @back1, x + @factor, y  + @factor, @back2)
+          g.setPaint(@grad)
+          g.fillRect(x, y, @factor, @factor)
+          g.setPaint(@color)
+        end
       end
     end
 
