@@ -7,7 +7,7 @@ require 'java'
 require 'yargui'
 require 'grid'
 grid      = Grid.new(20, 20)
-gridedit  = Yargui::GridEdit.new(grid)
+gridedit  = Yargui::Gridedit.new(grid)
 
 
 frame =  Yargui::Frame.new()

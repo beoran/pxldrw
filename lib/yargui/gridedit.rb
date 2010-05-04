@@ -5,32 +5,38 @@ require 'java'
 
 
 module Yargui
-  class Color < java.awt.Color
+  class Color < Awt::Color
   end
 
-  class Dimension < java.awt.Dimension
+  class Dimension < Awt::Dimension
 
   end
 
-  class BufferedImage < java.awt.image::BufferedImage
+  class BufferedImage < Awt::Image::BufferedImage
   end
 
-  class GradientPaint < java.awt::GradientPaint
-   
+  class GradientPaint < Awt::GradientPaint
   end
 
+  
+  class Gridedit < Swing::JComponent
 
-  class GridEdit < javax.swing.JComponent
+    include Mouse::Adapter
+    include Action::Adapter
 
     UI_CLASS_ID = "GridEditUI";
 
-    attr_reader :wide
-    attr_reader :high
+    attr_reader   :wide
+    attr_reader   :high
+    attr_reader   :zoom
+    attr_accessor :lines
 
-    def initialize(gridmodel)
+
+
+    # Initializes the Gird editor with a grid model.
+    def initialize(gridmodel, zoom=20)
       super()
-
-      @factor = 20    # magrnification factor
+      @zoom   = zoom   # Zoom factor
       @lines  = true # draw the grid lines or not?
       @color  = Color.new(255,255,255)
       # Color to draw the grid with
@@ -41,6 +47,7 @@ module Yargui
       self.grid = gridmodel
     end
 
+    # Draws self to the bitmap backbuffer
     def draw_buffered()
       g  = @buffer.createGraphics()
       paint_background(g)
@@ -48,11 +55,25 @@ module Yargui
       g.dispose()
     end
 
+    # Changes the grid model assoicated with this editor
     def grid=(grid)
       @grid   = grid # the grid we're editing
-      @wide   = @grid.wide * @factor
-      @high   = @grid.high * @factor
-      @dim    = Dimension.new(@wide + 1, @high + 1)
+      if @grid
+        update
+      end
+    end
+    
+    # Changes the zoom factor for this grid editor
+    def zoom=(zoom)
+      @zoom = zoom
+      update
+    end
+
+    # Called when the grid or the zoom changes
+    def update
+      @wide   = @grid.wide * @zoom
+      @high   = @grid.high * @zoom
+      @dim    = Dimension.new(@wide, @high)
       self.setMinimumSize(@dim)
       self.setSize(@dim)
       self.setMaximumSize(@dim )
@@ -68,33 +89,42 @@ module Yargui
        # self.paint_grid(g)
     end
 
+    # Paints the background color
     def paint_background(g)
       g.setPaint(@back1)
       g.fillRect(0, 0, @wide, @high)
     end
 
+    # Paints the grid's contents if it's not nil
     def paint_grid(g)
-      g.setPaint(@color)
-      for i in (0..@grid.wide)
-        x =  i * @factor
-        g.drawLine(x , 0, x, @high)
-        for j in (0..@grid.high)
-          y =  j * @factor
-          g.drawLine(0, y, @wide, y)
-          @grad = GradientPaint.new(x , y, @back1, x + @factor, y  + @factor, @back2)
-          g.setPaint(@grad)
-          g.fillRect(x, y, @factor, @factor)
-          g.setPaint(@color)
+      y = 0
+      for ydex in 0...@high
+        x = 0
+        for xdex in 0...@wide
+          pixel = @grid.get(xdex, ydex)
+          if pixel && pixel.opaque?
+            color = Color.new(*pixel)
+            g.setPaint(color)
+            g.fillRect(x, y , @zoom, @zoom)
+          else # Invisible or empty pixels. Indicate them with a gradient.
+            @grad = GradientPaint.new(x , y, @back1, x + @zoom, y  + @zoom, @back2)
+            g.setPaint(@grad)
+            g.fillRect(x, y, @zoom, @zoom)
+          end
+          if @lines # draw the grid outlines if needed
+            g.setPaint(@color)
+            g.drawRect(x, y , @zoom, @zoom)
+          x += @zoom
+          end
+          y += @zoom
         end
       end
     end
 
-=begin
-
     def getUIClassID()
       return UI_CLASS_ID
     end
-=end
+
 
   end
 end

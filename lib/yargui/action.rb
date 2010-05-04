@@ -1,9 +1,7 @@
-# 
-# To change this template, choose Tools | Templates
-# and open the template in the editor.
+#
+# Transforms Swing action events into something more Rubyesque
+#
  
-require 'awt'
-
 module Yagui
   module Action
     # Adapter for swing action events

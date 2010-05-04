@@ -1,6 +1,7 @@
-# 
-# To change this template, choose Tools | Templates
-# and open the template in the editor.
+#
+# This module is used to import java Swing for easy use
+#
+
 
 require 'java'
    

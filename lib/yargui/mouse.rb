@@ -1,7 +1,7 @@
-# 
-# To change this template, choose Tools | Templates
-# and open the template in the editor.
- 
+#
+# The mouse class transforms Swing style event handling to something more
+# Rubyesque
+#
 
 
 module Yagui

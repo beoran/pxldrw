@@ -11,6 +11,7 @@ class Color
 
   OPAQUE      = 255
 
+  # vCreates a new abstract RGBA color.
   def initialize(r, g=nil, b=nil, a = nil, name=nil)
     if g
       @r    = r
@@ -24,12 +25,25 @@ class Color
     a ||= OPAQUE
   end
 
+  # Transforms the color to an array of r, g, b, and a values of the color
   def to_a
-    return @r, @g, @b
+    return @r, @g, @b, @a
   end
 
+  # Allows the splat operator to be applied to color.
+  # Returns r, g, b, a in that order
+  def to_splat
+    return @r, @g, @b, @a
+  end
+
+  # Returns true if the color is invisible, false if not
   def transparent?
     return @a == 0
+  end
+
+  # Returns true if the color is visible, false if not
+  def opaque?
+    return @a > 0
   end
 
 

@@ -1,10 +1,13 @@
-# 
-# To change this template, choose Tools | Templates
-# and open the template in the editor.
- 
-require 'java'
+#
+# This module is used to import java AWT for easy use
+#
 
-module Awt
-  include_package 'java.awt'
-  include_package 'java.awt.event'
-end
+require 'java'
+module Yargui
+  module Awt
+    include_package 'java.awt'
+    include_package 'java.awt.event'
+    include_package  'java.awt.image'
+  end # module Awt
+end # module Yargui
+

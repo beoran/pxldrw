@@ -5,29 +5,31 @@ module Yagui
   # wrapper fos some
   module Wrapper
     
-    # Class function to check an object and "transform" it into an AWT/Swing 
+    # Class function to check self and return the matching AWT/Swing
     # component
-    def self.to_component(object)
-      if object.is_a? Awt::Component        
-        return object
-      elsif object.respond_to? :swing
-        # Otherwise, try to get the .swing value
-        return object.swing
+    def self.to_gui_component()
+      if self.is_a? Awt::Component
+        return self
+      elsif self.is_a? Swing::JComponent
+        return self
+      elsif self.respond_to? :to_swing
+        # Otherwise, try to get the .to_swing value
+        return self.swing
       else 
         return nil
       end      
     end
     
     
-    attr_reader :swing
+    attr_reader :to_swing
     def initialize
       @swing = nil
     end
     
-    def add(other)
-      component = Yagui::Wrapper.to_component(other)
+    def add_child(other)
+      component = other.to_gui_component
       if component
-        @swing.add(component)
+        self.getContentPane().add(component)
       else 
         raise "Cannot add #{other} to this UI element."
       end      
@@ -37,20 +39,20 @@ module Yagui
       w = sizes.shift
       return unless w
       h = sizes.shift || w
-      @swing.setSize(w, h)      
+      self.setSize(w, h)
     end
     
     # Enables mouse handling
     def enable_mouse
       return @mouse if @mouse
       @mouse ||= Yagui::Mouse::Adapter.new
-      @swing.addMouseListener(@mouse)
-      @swing.addMouseMotionListener(@mouse)
+      self.addMouseListener(@mouse)
+      self.addMouseMotionListener(@mouse)
       return @mouse
     end
     
     # Gets the mouse handler. 
-    def mouse
+    def mouse_handler
       return enable_mouse
     end
     
