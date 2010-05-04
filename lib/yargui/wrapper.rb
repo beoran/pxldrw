@@ -1,7 +1,7 @@
 
  
 
-module Yagui
+module Yargui
   # wrapper fos some
   module Wrapper
     
@@ -23,6 +23,7 @@ module Yagui
     
     attr_reader :to_swing
     def initialize
+      super()
       @swing = nil
     end
     
@@ -34,18 +35,18 @@ module Yagui
         raise "Cannot add #{other} to this UI element."
       end      
     end
-    
+=begin
     def resize(*sizes)
       w = sizes.shift
       return unless w
       h = sizes.shift || w
       self.setSize(w, h)
     end
-    
+=end
     # Enables mouse handling
     def enable_mouse
       return @mouse if @mouse
-      @mouse ||= Yagui::Mouse::Adapter.new
+      @mouse ||= Yargui::Mouse::Adapter.new
       self.addMouseListener(@mouse)
       self.addMouseMotionListener(@mouse)
       return @mouse
@@ -61,7 +62,7 @@ module Yagui
       sname = name.to_sym
       return @action[sname] if (@action and @action[sname]) 
       @action       ||= {} 
-      @action[sname]  = Yagui::Action::Adapter.new(sname)
+      @action[sname]  = Yargui::Action::Adapter.new(sname)
       if block
         @action[sname].action do |act| block.call(act) end
       end

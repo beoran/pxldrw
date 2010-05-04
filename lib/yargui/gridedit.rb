@@ -9,10 +9,9 @@ module Yargui
   end
 
   class Dimension < Awt::Dimension
-
   end
 
-  class BufferedImage < Awt::Image::BufferedImage
+  class BufferedImage < Awt::BufferedImage
   end
 
   class GradientPaint < Awt::GradientPaint
@@ -21,8 +20,9 @@ module Yargui
   
   class Gridedit < Swing::JComponent
 
-    include Mouse::Adapter
-    include Action::Adapter
+    include Wrapper
+    # include Mouse::Adapter
+    # include Action::Adapter
 
     UI_CLASS_ID = "GridEditUI";
 
@@ -34,7 +34,7 @@ module Yargui
 
 
     # Initializes the Gird editor with a grid model.
-    def initialize(gridmodel, zoom=20)
+    def initialize(gridmodel, zoom=10)
       super()
       @zoom   = zoom   # Zoom factor
       @lines  = true # draw the grid lines or not?
@@ -45,6 +45,7 @@ module Yargui
       # Background colors of grid
       self.setBackground(@back)
       self.grid = gridmodel
+      self.enable_mouse
     end
 
     # Draws self to the bitmap backbuffer
@@ -75,7 +76,7 @@ module Yargui
       @high   = @grid.high * @zoom
       @dim    = Dimension.new(@wide, @high)
       self.setMinimumSize(@dim)
-      self.setSize(@dim)
+      self.setSize(@wide, @high)
       self.setMaximumSize(@dim )
       @buffer = BufferedImage.new(800, 600, BufferedImage::TYPE_INT_RGB)
       draw_buffered()
@@ -98,9 +99,9 @@ module Yargui
     # Paints the grid's contents if it's not nil
     def paint_grid(g)
       y = 0
-      for ydex in 0...@high
+      for ydex in 0...@grid.high
         x = 0
-        for xdex in 0...@wide
+        for xdex in 0...@grid.wide
           pixel = @grid.get(xdex, ydex)
           if pixel && pixel.opaque?
             color = Color.new(*pixel)
@@ -113,11 +114,11 @@ module Yargui
           end
           if @lines # draw the grid outlines if needed
             g.setPaint(@color)
-            g.drawRect(x, y , @zoom, @zoom)
-          x += @zoom
+            g.drawRect(x, y , @zoom, @zoom)          
           end
-          y += @zoom
+          x += @zoom
         end
+        y += @zoom
       end
     end
 

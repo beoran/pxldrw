@@ -4,10 +4,10 @@
  
 require 'slide/wrapper'
 
-module Yagui
+module Yargui
   module Layout    
     class Grid
-      include Yagui::Wrapper
+      include Yargui::Wrapper
       attr_reader :rows
       attr_reader :cols
       def initialize(rows = 1, columns = 1)

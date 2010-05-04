@@ -5,15 +5,33 @@ require 'java'
 
 module Yargui
   class Frame < javax.swing.JFrame
-    def initialize(w = 640, h= 480, name="Yargui")
+    def initialize(name="Yargui", w = nil, h= nil)
       super(name)
-      self.setSize(w, h)
+      h ||= w
+      self.setSize(w, h) if w 
     end
 
     # Adds a child component to this comonent's content pane
     def <<(child)
       self.getContentPane().add(child)
     end
+
+    def menubar=(bar)
+      @menubar = bar
+      self.setJMenuBar(@menubar.swing)
+      return @menubar
+    end
+
+    def add_menubar(target)
+      bar = Slide::Menubar.new(target)
+      self.menubar = bar
+    end
+
+    def add_menu(title)
+      return nil unless self
+      return self.menu(title)
+    end
+
   end
 
 end

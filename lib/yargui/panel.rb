@@ -4,9 +4,9 @@
  
 require  'slide'
 
-module Yagui
+module Yargui
   class Panel 
-    include Yagui::Wrapper
+    include Yargui::Wrapper
     def initialize
       @swing = Swing::JPanel.new
     end

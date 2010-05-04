@@ -6,11 +6,11 @@ require 'swing'
 require 'slide'
 
 
-class Scrible < Yagui::Frame
+class Scrible < Yargui::Frame
 
   def initialize(clip = nil)
     super("Tispred - Clip Editor") 
-    @canvas = Yagui::Canvas.new(clip)
+    @canvas = Yargui::Canvas.new(clip)
     @swing.getContentPane().add(@canvas.swing)    
     
     @swing.setDefaultCloseOperation(Swing::JFrame::EXIT_ON_CLOSE) 

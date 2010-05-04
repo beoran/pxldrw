@@ -6,11 +6,11 @@ require 'slide'
 require 'swing'
 require 'awt'
 
-module Yagui
+module Yargui
   
 
 class Canvas
-  include Yagui::Wrapper
+  include Yargui::Wrapper
   
   class Drawpanel < Swing::JPanel
   

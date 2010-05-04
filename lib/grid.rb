@@ -24,14 +24,14 @@ class Grid
   def out_of_bounds?(x, y)
     return true if x >= self.wide
     return true if x < 0
-    return true if y >= self.heigh
+    return true if y >= self.high
     return true if y < 0
     return false
   end
 
   # Gets a pixel from the x and y cooordinates.
   # Returns nil if x or y is out of bounds
-  def get(x, y, color)
+  def get(x, y)
     return nil if out_of_bounds?(x, y)
     return @pixels[y][x]
   end

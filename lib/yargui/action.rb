@@ -2,13 +2,14 @@
 # Transforms Swing action events into something more Rubyesque
 #
  
-module Yagui
+module Yargui
   module Action
     # Adapter for swing action events
-    class Adapter
+    module Adapter
     include Awt::ActionListener
     
       def initialize(name = :action)
+        super()
         @name   = name
         @action = nil
       end

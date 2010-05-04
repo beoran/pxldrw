@@ -3,9 +3,9 @@
 # and open the template in the editor.
  
 
-module Yagui
+module Yargui
   class Button
-    include Yagui::Wrapper
+    include Yargui::Wrapper
     
     def initialize(text, icon_name  = nil)
       if icon_name

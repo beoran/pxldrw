@@ -7,7 +7,7 @@ module Yargui
   module Awt
     include_package 'java.awt'
     include_package 'java.awt.event'
-    include_package  'java.awt.image'
+    include_package 'java.awt.image'
   end # module Awt
 end # module Yargui
 

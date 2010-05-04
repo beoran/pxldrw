@@ -9,10 +9,10 @@ require 'slide/button'
 require 'slide/frame' 
 require 'slide/layout' 
 
-class Toolbox  < Yagui::Frame
+class Toolbox  < Yargui::Frame
   
   def add_button(text)    
-    button          = Yagui::Button.new(text,  nil)
+    button          = Yargui::Button.new(text,  nil)
     bs              = "button_#{text}".to_sym
     button.action() do | act | 
         puts "Button action #{act} #{bs}"
@@ -29,8 +29,8 @@ class Toolbox  < Yagui::Frame
     @layout_cols  = 2
     @button_count = @layout_rows * @layout_cols
     @button_size  = 40 
-    @panel        = Yagui::Panel.new()
-    @layout       = Yagui::Layout::Grid.new(@layout_rows, @layout_cols)
+    @panel        = Yargui::Panel.new()
+    @layout       = Yargui::Layout::Grid.new(@layout_rows, @layout_cols)
     @panel.layout = @layout
     
     self.resize(@button_size * @layout_cols, @button_size * @layout_rows)

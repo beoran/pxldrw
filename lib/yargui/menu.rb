@@ -4,9 +4,9 @@ require 'slide/wrapper'
 require 'slide/action'
   
 
-module Yagui
+module Yargui
   class Menuitem
-    include Yagui::Wrapper
+    include Yargui::Wrapper
     
     def initialize(label, iconname = nil, action_name = :action, &block )
       if iconname
@@ -25,7 +25,7 @@ module Yagui
   end
   
   class Menu
-    include Yagui::Wrapper
+    include Yargui::Wrapper
     def initialize(label, target)
       @target = target 
       @swing  = Swing::JMenu.new(label)
@@ -43,7 +43,7 @@ module Yagui
   end
   
   class Menubar
-    include Yagui::Wrapper
+    include Yargui::Wrapper
     def initialize(target)
       @target= target 
       @swing = Swing::JMenuBar.new()

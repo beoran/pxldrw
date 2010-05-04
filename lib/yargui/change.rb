@@ -4,7 +4,7 @@
 require 'swing'
 require 'slide'
 
-module Yagui
+module Yargui
   module Change
     # Adapter for swing action events
     class Adapter
@@ -33,7 +33,7 @@ module Yagui
       # Enables change handling
       def enable_change(block = nil)
         return @change if @change 
-        @change   = Yagui::Change::Adapter.new()
+        @change   = Yargui::Change::Adapter.new()
         if block
           @change.action do |source| block.call(source) end
         end
@@ -53,7 +53,7 @@ module Yagui
       # Enables change handling
       def enable_change(block = nil)
         return @change if @change 
-        @change   = Yagui::Change::Adapter.new()
+        @change   = Yargui::Change::Adapter.new()
         if block
           @change.action do |source| block.call(source) end
         end

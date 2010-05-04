@@ -4,19 +4,20 @@
 #
 
 
-module Yagui
+module Yargui
   module Mouse
     class Adapter
-      include Awt::MouseMotionListener 
-      include Awt::MouseListener 
+      include Yargui::Awt::MouseMotionListener
+      include Yargui::Awt::MouseListener
       
       def initialize()
+        super()
         @click    = nil
         @press    = nil
         @release  = nil
         @drag     = nil
         @motion   = nil
-        @last_down= nil 
+        @last_down= nil
       end
       
       # Translates a swing Mouseevent into a set of simple values.

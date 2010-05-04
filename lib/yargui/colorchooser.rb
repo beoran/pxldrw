@@ -6,10 +6,10 @@
 require 'slide'
 require 'swing'
 
-module Yagui
+module Yargui
   class Colorchooser 
-    include Yagui::Wrapper
-    include Yagui::Change::ColorModelHandler
+    include Yargui::Wrapper
+    include Yargui::Change::ColorModelHandler
 
     def initialize
       @swing = Swing::JColorChooser.new()
