@@ -56,11 +56,16 @@ module Yargui
     def mouse_handler
       return enable_mouse
     end
+
+    # Easier alias to the mouse handler
+    def mouse
+      return mouse_handler
+    end
     
     # Enables action handling
     def enable_action(name = :action, block = nil)
       sname = name.to_sym
-      return @action[sname] if (@action and @action[sname]) 
+      return @action[sname] if (@action and @action[sname])
       @action       ||= {} 
       @action[sname]  = Yargui::Action::Adapter.new(sname)
       if block

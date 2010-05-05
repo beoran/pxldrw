@@ -16,7 +16,7 @@ module Yargui
         @press    = nil
         @release  = nil
         @drag     = nil
-        @motion   = nil
+        @move     = nil
         @last_down= nil
       end
       
@@ -35,7 +35,7 @@ module Yargui
             b = :button_none
         end
         x = mouse_event.getX()
-        y = mouse_event.getX()
+        y = mouse_event.getY()
         return  b, x, y
       end  
       
@@ -65,8 +65,8 @@ module Yargui
     
       def mouseMoved(mouse_event)      
         b, x, y = translate(mouse_event)
-        if @motion
-          @motion.call(b, x, y)
+        if @move
+          @move.call(b, x, y)
         end        
       end
     
@@ -111,8 +111,8 @@ module Yargui
       
       # Install a handler block that will be called with button, x, and y 
       # when the mouse is moving over the component.      
-      def motion(&block)
-        @motion = block
+      def move(&block)
+        @move = block
       end
       
       # Install a handler block that will be called with button, x, and y 

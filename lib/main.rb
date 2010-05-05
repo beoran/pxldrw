@@ -7,7 +7,16 @@ require 'java'
 require 'yargui'
 require 'grid'
 require 'color'
-grid      = Grid.new(20, 20)
+
+def handler(b, x, y, gr, gred)
+  color = ::Color.new(255, 255, 255, 255, :white)
+  gr.put(x / 10, y / 10, color)
+  # gred.update_drawing
+  gred.repaint
+end
+
+grid      = Grid.new(64, 64)
+grid.fill(::Color.new(0,0,0,255,:black))
 gridedit  = Yargui::Gridedit.new(grid)
 
 
@@ -22,13 +31,15 @@ button.add_action_listener {|event| event.source.text = "You did it!"}
 # We can transparently call Java methods on Java objects, just as if they were defined in Ruby.
 # frame << (label)  # Invoking the Java method 'getContentPane'.
 # frame << (button)  # Invoking the Java method 'getContentPane'.
-gridedit.mouse_handler.click do |b, x, y|
-  puts "Click!", b, x, y
-  color = ::Color.new(255, 255, 255, 255, :white)
-  grid.put(x / 10, y / 10, color)
-  p grid
-  gridedit.repaint
+=begin
+gridedit.mouse.press do |b, x, y|
+  handler(b, x, y, grid, gridedit)
 end
+
+gridedit.mouse.drag do |b, x, y|
+  handler(b, x, y, grid, gridedit)
+end
+=end
 
 frame.setLayout(java.awt.BorderLayout.new());
 frame << gridedit

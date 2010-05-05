@@ -3,6 +3,8 @@
 # The Grid class models the twodimensional grid that the pixel art is drawn on.
 # Grid class is mutable for memory efficiency.
 
+require 'yargui'
+
 class Grid
   # Width of the grid
   attr_reader :wide
@@ -16,6 +18,9 @@ class Grid
     @wide   = wide
     @high   = high
     @pixels = Array.new(@high) do
+        Array.new(@wide, nil)
+    end
+    @paint = Array.new(@high) do
         Array.new(@wide, nil)
     end
   end
@@ -36,6 +41,11 @@ class Grid
     return @pixels[y][x]
   end
 
+  def get_paint(x, y)
+    return nil if out_of_bounds?(x, y)
+    return @paint[y][x]
+  end
+
 
   # Puts a pixel at the given x and y cooordinates with the given color
   # Returns the color set, or nil if  x or y are out of bounds
@@ -43,6 +53,15 @@ class Grid
     return nil if out_of_bounds?(x, y)
     @pixels[y][x] = color
     return color
+  end
+
+  def fill(color)
+    for y in 0...@high
+      row = @pixels[y]
+      for x in 0...@wide
+        row[x] = color
+      end
+    end
   end
 
 

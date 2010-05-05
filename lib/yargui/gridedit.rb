@@ -5,6 +5,7 @@ require 'java'
 
 
 module Yargui
+
   class Color < Awt::Color
   end
 
@@ -18,7 +19,10 @@ module Yargui
   end
 
   
+
+  
   class Gridedit < Swing::JComponent
+    include Yargui::Awt::MouseMotionListener
 
     include Wrapper
     # include Mouse::Adapter
@@ -37,7 +41,7 @@ module Yargui
     def initialize(gridmodel, zoom=10)
       super()
       @zoom   = zoom   # Zoom factor
-      @lines  = true # draw the grid lines or not?
+      @lines  = false # draw the grid lines or not?
       @color  = Color.new(255,255,255)
       # Color to draw the grid with
       @back1  = Color.new(64,64,64)
@@ -45,7 +49,7 @@ module Yargui
       # Background colors of grid
       self.setBackground(@back)
       self.grid = gridmodel
-      self.enable_mouse
+      self.addMouseMotionListener(self)
     end
 
     # Draws self to the bitmap backbuffer
@@ -70,7 +74,7 @@ module Yargui
       update
     end
 
-    # Called when the grid or the zoom changes
+    # Called when the grid or zoom changes
     def update
       @wide   = @grid.wide * @zoom
       @high   = @grid.high * @zoom
@@ -78,16 +82,20 @@ module Yargui
       self.setMinimumSize(@dim)
       self.setSize(@wide, @high)
       self.setMaximumSize(@dim )
-      @buffer = BufferedImage.new(800, 600, BufferedImage::TYPE_INT_RGB)
+      @buffer = BufferedImage.new(@wide, @high, BufferedImage::TYPE_INT_RGB)
+      
+    end
+
+    def update_drawing
       draw_buffered()
     end
 
-    def paintComponent(g)
-       puts "draw called"
-       super(g)
-       g.drawImage(@buffer, 0, 0, nil);
+    def paintComponent(g)       
+       # super(g)
+       # g.drawImage(@buffer, 0, 0, nil)
        # paint_background(g)
-       # self.paint_grid(g)
+       paint_grid(g)
+       g.dispose()
     end
 
     # Paints the background color
@@ -98,32 +106,44 @@ module Yargui
 
     # Paints the grid's contents if it's not nil
     def paint_grid(g)
-      y = 0
-      for ydex in 0...@grid.high
+      y     = 0
+      ydex  = 0
+      while ydex < @grid.high
+        xdex = 0
         x = 0
-        for xdex in 0...@grid.wide
+        while xdex < @grid.wide
           pixel = @grid.get(xdex, ydex)
           if pixel && pixel.opaque?
-            color = Color.new(*pixel)
-            g.setPaint(color)
-            g.fillRect(x, y , @zoom, @zoom)
-          else # Invisible or empty pixels. Indicate them with a gradient.
-            @grad = GradientPaint.new(x , y, @back1, x + @zoom, y  + @zoom, @back2)
-            g.setPaint(@grad)
-            g.fillRect(x, y, @zoom, @zoom)
+            paint = Yargui::Color.new(*pixel)
+          else paint # Invisible or empty pixels. Indicate them with a gradient.
+            paint = GradientPaint.new(x , y, @back1, x + @zoom, y  + @zoom, @back2)
           end
+          g.setPaint(paint)
+          g.fillRect(x, y , @zoom, @zoom)
+
           if @lines # draw the grid outlines if needed
             g.setPaint(@color)
             g.drawRect(x, y , @zoom, @zoom)          
           end
           x += @zoom
+          xdex += 1
         end
         y += @zoom
+        ydex   += 1
       end
     end
 
     def getUIClassID()
       return UI_CLASS_ID
+    end
+
+    def mouseDragged(e)
+      color = ::Color.new(255, 255, 255, 255, :white)
+      @grid.put(e.getX() / @zoom, e.getY() / @zoom, color);
+      self.repaint()
+    end
+
+    def mouseMoved(mouse_event)
     end
 
 
