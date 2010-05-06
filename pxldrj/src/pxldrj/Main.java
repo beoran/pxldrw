@@ -6,6 +6,7 @@
 package pxldrj;
 
 import javax.swing.JFrame;
+import static ascrlf.Tools.*;
 
 /**
  *
@@ -20,6 +21,12 @@ public class Main {
         Frame frame         = new Frame("pxldrwj", 300, 300);
         Grid grid           = new Grid(64, 64);
         Gridedit gridedit   = new Gridedit(grid);
+        puts("Hello!" , "World!");
+        /*
+        ascrlf.Tryout a     = new ascrlf.Tryout();
+        a.hello();
+         *
+         */
         grid.fill(Grid.color(0,0,0));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new java.awt.BorderLayout());
