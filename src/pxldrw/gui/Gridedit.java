@@ -20,37 +20,64 @@ import static pxldrw.tools.Puts.*;
 public class Gridedit extends JComponent
 implements MouseMotionListener
 {
+    public static final int ZOOM_MAX = 20;
 
     public Grid grid;
     public int wide, high;
     public int zoom;
 
-    public Gridedit(Grid grid) {
+    public Gridedit(Grid grid, int zoom) {
         super();
+        this.setOpaque(false);
         this.addMouseMotionListener(this);
         this.grid = grid;
-        this.zoom = 10;
+        this.zoom = zoom;
+        this.sizeChanged();
+    }
+
+    public Gridedit(Grid grid) {
+        this(grid, 10);
+    }
+
+    /* Call this whenever the size of the grid editor should be changed. */
+    public void sizeChanged() {
         this.wide = grid.wide() * this.zoom;
         this.high = grid.high() * this.zoom;
         Dimension dim  = new Dimension(wide, high);
         this.setMinimumSize(dim);
         this.setSize(wide, high);
         this.setMaximumSize(dim);
+        this.setPreferredSize(dim);
     }
+
+    /** Sets the current zoom factor of the grid editor. */
+    public int zoom(int z) {
+        if (z < 1 || z > ZOOM_MAX ) return this.zoom;
+        this.zoom = z;
+        this.sizeChanged();
+        this.repaint();
+        return this.zoom;
+    }
+
+    /** Returns the current zoom factor of the grid editor. */
+    public int zoom() {
+        return this.zoom;
+    }
+
 
     @Override
     public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
-        int x, y, i, j;
-        printf("Painting! %d %d\n", grid.high(), grid.wide());
-        for (i = 0 ; i < grid.high() ; i ++) {
-            y = i * zoom;
-            for (j = 0 ; j < grid.wide() ; j++) {
-                x = j * zoom;
-                pxldrw.logic.Color gc = grid.get(j, i);
-                if (gc == null) continue;
+        int x, y, gy, gx;
+        // printf("Painting! %d %d\n", grid.high(), grid.wide());
+        for (gy = 0 ; gy < grid.high() ; gy ++) {
+            y = gy * zoom;
+            for (gx = 0 ; gx < grid.wide() ; gx++) {
+                x = gx * zoom;                
+                pxldrw.logic.Color gc = grid.get(gx, gy);
+                if (gc == null) { continue; }
                 java.awt.Color col = gc.awt();
-                if (col == null) continue;
+                if (col == null) { continue; }
                 g2.setPaint(col);
                 g2.fillRect(x, y, zoom, zoom);
             }
@@ -59,8 +86,10 @@ implements MouseMotionListener
     }
 
     public void mouseDragged(MouseEvent e) {
-        printf("%s", grid.set(e.getX() / zoom, e.getY() / zoom, 1).toString());
-        printf("Set! %d %d: %d -> %d", e.getX(), e.getY(), 1, 0);
+        int gridx, gridy;
+        gridx = e.getX() / zoom;
+        gridy = e.getY() / zoom;
+        grid.set(gridx, gridy, 1);
         this.repaint();
     }
 

@@ -52,14 +52,16 @@ public class Grid {
      */
     public Color set(int x, int y, int index) {
         if(!exist(x, y)) return null;
+        this.grid[y][x] = index;
         return this.palette.get(index);
     }
 
     /**
      * Gets the index of color at the given coordinates.
-     * Will raise a bounds error if out of bounds
+     * Will return -1 the point is out of bounds
      */
-    protected int getIndex(int x, int y) {
+    public int getIndex(int x, int y) {
+        if(!exist(x, y)) return -1;
         return this.grid[y][x];
     }
 
