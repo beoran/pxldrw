@@ -6,6 +6,7 @@
 package pxldrw;
 
 import javax.swing.JScrollPane;
+import javax.swing.UIManager;
 import pxldrw.gui.*;
 import pxldrw.logic.*;
 import pxldrw.logic.Palette;
@@ -22,7 +23,12 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-
+        try {
+        UIManager.setLookAndFeel(
+            UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception ex) {
+            puts("Could not set look and feel.")
+        }        
         Frame frame         = new Frame("pxldrwj", 640, 480);
         Subframe sframe     = new Subframe("Edit", 10, 10);
         Desk desk           = new Desk();
