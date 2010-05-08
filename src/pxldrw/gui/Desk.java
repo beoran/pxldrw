@@ -41,7 +41,7 @@ public class Desk extends JDesktopPane {
     public Desk() {
         super();
         this.setSize(640, 480);
-        this.setDesktopManager(Manager.make());
+        //this.setDesktopManager(Manager.make());
         this.setForeground(Color.white);
         this.setBackground(Color.black);
     }

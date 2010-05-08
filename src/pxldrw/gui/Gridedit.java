@@ -67,19 +67,25 @@ implements MouseMotionListener
 
     @Override
     public void paintComponent(Graphics g) {
-        Graphics2D g2 = (Graphics2D) g;
+        Graphics2D g2    = (Graphics2D) g;
+        Rectangle bounds = g.getClipBounds();
         int x, y, gy, gx;
         // printf("Painting! %d %d\n", grid.high(), grid.wide());
         for (gy = 0 ; gy < grid.high() ; gy ++) {
             y = gy * zoom;
             for (gx = 0 ; gx < grid.wide() ; gx++) {
-                x = gx * zoom;                
+                x = gx * zoom;
+                Rectangle drawrect = new Rectangle(x, y, zoom, zoom);
+                if (!bounds.intersects(drawrect)) {
+                    continue;
+                }
+
                 pxldrw.logic.Color gc = grid.get(gx, gy);
                 if (gc == null) { continue; }
                 java.awt.Color col = gc.awt();
                 if (col == null) { continue; }
                 g2.setPaint(col);
-                g2.fillRect(x, y, zoom, zoom);
+                g2.fill(drawrect);
             }
         }
 

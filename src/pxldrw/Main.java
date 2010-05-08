@@ -10,6 +10,7 @@ import javax.swing.UIManager;
 import pxldrw.gui.*;
 import pxldrw.logic.*;
 import pxldrw.logic.Palette;
+import static pxldrw.tools.Puts.*;
 
 
 
@@ -27,7 +28,7 @@ public class Main {
         UIManager.setLookAndFeel(
             UIManager.getSystemLookAndFeelClassName());
         } catch (Exception ex) {
-            puts("Could not set look and feel.")
+            puts("Could not set look and feel.");
         }        
         Frame frame         = new Frame("pxldrwj", 640, 480);
         Subframe sframe     = new Subframe("Edit", 10, 10);
@@ -48,7 +49,7 @@ public class Main {
         pal.add(0,0,0);
         grid.fill(0);
         frame.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
-        frame.setLayout(new java.awt.BorderLayout());
+        //frame.setLayout(new java.awt.BorderLayout());
         sframe.addChild(scroll);
         sframe.setVisible(true);
         desk.addChild(sframe);
