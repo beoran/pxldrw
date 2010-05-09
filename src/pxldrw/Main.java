@@ -31,7 +31,7 @@ public class Main {
             puts("Could not set look and feel.");
         }        
         Frame frame         = new Frame("pxldrwj", 640, 480);
-        Subframe sframe     = new Subframe("Edit", 10, 10);
+        Subframe sframe     = new Subframe("Edit", 300, 300);
         Desk desk           = new Desk();
         Palette pal         = Palette.make();
         Grid grid           = new Grid(640, 640, pal);
@@ -57,9 +57,6 @@ public class Main {
         frame.addChild(sframe);
         // frame.setSize(gridedit.wide, gridedit.high);
         // root.setSize(640, 480);
-        
-        
-
 
         frame.setVisible(true);
         /*root.add(frame);
