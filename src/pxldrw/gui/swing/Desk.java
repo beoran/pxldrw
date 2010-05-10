@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package pxldrw.gui;
+package pxldrw.gui.swing;
 
 import javax.swing.*;
 import java.awt.*;
