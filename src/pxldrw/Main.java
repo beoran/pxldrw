@@ -4,7 +4,7 @@
  */
 
 package pxldrw;
-
+import org.eclipse.swt.widgets.*;
 import javax.swing.JScrollPane;
 import javax.swing.UIManager;
 import pxldrw.gui.*;
@@ -24,44 +24,24 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        try {
-        UIManager.setLookAndFeel(
-            UIManager.getSystemLookAndFeelClassName());
-        } catch (Exception ex) {
-            puts("Could not set look and feel.");
-        }        
-        Frame frame         = new Frame("pxldrwj", 640, 480);
-        Subframe sframe     = new Subframe("Edit", 300, 300);
-        Desk desk           = new Desk();
         Palette pal         = Palette.make();
         Grid grid           = new Grid(640, 640, pal);
-        Gridedit gridedit   = new Gridedit(grid, 3);
-        JScrollPane scroll  = new JScrollPane(gridedit);
-
-        /* puts("Hello!" , "World!"); */
-        /*
-        ascrlf.Tryout a     = new ascrlf.Tryout();
-        a.hello();
-         *
-         */
-        pal.add();
         //pal.add(255,255,255);
         pal.add(0,0,0);
         grid.fill(0);
-        frame.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
-        //frame.setLayout(new java.awt.BorderLayout());
-        sframe.addChild(scroll);
-        sframe.setVisible(true);
-        desk.addChild(sframe);
-        desk.setVisible(true);
-        frame.addChild(sframe);
-        // frame.setSize(gridedit.wide, gridedit.high);
-        // root.setSize(640, 480);
 
-        frame.setVisible(true);
-        /*root.add(frame);
-        */
-        
+    	Display display = new Display();
+    	Shell shell = new Shell(display);
+    	pxldrw.gui.swt.Gridedit gridedit = 
+    		new pxldrw.gui.swt.Gridedit(shell, 0, grid, 5);
+    	       pal.add();
+    	shell.open();
+    	while(!shell.isDisposed()) {
+    		display.sleep();
+    		display.readAndDispatch();
+    	}
+        shell.dispose();
+        display.dispose();
     }
 
 }

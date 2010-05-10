@@ -34,4 +34,22 @@ public class Missing implements Color {
         return null;
     }
 
+
+	public int B() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+
+	public int G() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+
+	public int R() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }
