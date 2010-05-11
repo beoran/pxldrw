@@ -1,7 +1,8 @@
 package jadtgl.awt;
 
+
 public class Color extends java.awt.Color 
-implements jadtgl.Platform.Color {
+implements jadtgl.Color {
 
 	private static final long serialVersionUID = -2957542802622847242L;
 

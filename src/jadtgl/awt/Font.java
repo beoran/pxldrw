@@ -1,31 +1,39 @@
 package jadtgl.awt;
 
 
-public class Font extends java.awt.Font 
-implements jadtgl.Platform.Font {
+
+
+public class Font implements jadtgl.Font {
 
 	private static final long serialVersionUID = 2010205489334004547L;
 
-	public Font(java.awt.Font font) {
-		super(font);
+	java.awt.Font _font;
+	
+	public Font(String name, int size) {
+		_font = new java.awt.Font(name, java.awt.Font.PLAIN, size);
+	}
+	
+	/** Returns the underlying AWT object. */
+	public java.awt.Font awt() {
+		return _font;
 	}
 
 	@Override
 	public int height(String utf8) {
 		// TODO Auto-generated method stub
-		return 0;
+		return _font.getSize();
 	}
 
 	@Override
 	public String name() {
 		// TODO Auto-generated method stub
-		return this.getName();
+		return _font.getName();
 	}
 
 	@Override
 	public int size() {
 		// TODO Auto-generated method stub
-		return this.getSize();
+		return _font.getSize();
 	}
 
 	@Override

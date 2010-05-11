@@ -2,10 +2,10 @@ package jadtgl.awt;
 
 
 
+import jadtgl.Color;
+import jadtgl.Graphics;
+import jadtgl.Handler;
 import jadtgl.Widget;
-import jadtgl.Platform.Color;
-import jadtgl.Platform.Font;
-import jadtgl.Platform.Graphics;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -15,7 +15,7 @@ import static pxldrw.tools.Puts.*;
 
 
 public class Window extends java.awt.Frame 
-implements jadtgl.Platform.Window {
+implements jadtgl.Window {
 		
 		private static final long serialVersionUID = 635859928665977908L;
 		
@@ -33,8 +33,9 @@ implements jadtgl.Platform.Window {
 		Widget widget;
 		/** Canvas for rendering on. */
 		java.awt.Canvas	canvas;
-		/** Double buffer to reduce flicker. */
-		BufferStrategy 	buffer;
+		/** Graphics wrapper. We don't use double buffering as that is too slow. */
+		Graphics graphics;
+		
 		
 		public Window(String title, int w, int h) {
 			super("Hi!");
@@ -50,9 +51,7 @@ implements jadtgl.Platform.Window {
 			this.add(canvas);
 			this.pack();
 			// Create BackBuffer...
-			canvas.createBufferStrategy( 2 );
-			buffer = canvas.getBufferStrategy();
-			puts("buffer", buffer);
+			graphics = new jadtgl.awt.Graphics(canvas.getGraphics());
 			this.draw();		 
 		}
 		 
@@ -60,24 +59,85 @@ implements jadtgl.Platform.Window {
 		public void processEvent(java.awt.AWTEvent e) {
 			// can only send events if there is a root widget.
 			if (widget == null) {
+				// if no root widget, ensure that quit still works.
 				if( e.getID() == WindowEvent.WINDOW_CLOSING) {
 					this.dispose();							
 				}
+				puts("unhandled event: no widget: ", e);
 				return;
+			}
+			
+			jadtgl.Handler.Reply reply 	= null;
+			MouseEvent 			me 		= null;
+		    MouseWheelEvent		mw 		= null;
+		    WindowEvent			we 		= null;				 
+			KeyEvent   			ke 		= null;
+			ComponentEvent		ce		= null;
+			
+			switch (e.getID()) {
+			case MouseEvent.MOUSE_PRESSED:
+				me 		= (MouseEvent) e;
+				reply 	= widget.onMouseDown(me.getX(), me.getY(), me.getButton());
+			break;
+			case MouseEvent.MOUSE_RELEASED:
+				me 		= (MouseEvent) e;
+				reply 	= widget.onMouseUp(me.getX(), me.getY(), me.getButton());
+			break;	
+			case MouseEvent.MOUSE_CLICKED:
+				me 		= (MouseEvent) e;
+				reply 	= widget.onMouseClick(me.getX(), me.getY(), me.getButton());
+			break;
+			case MouseEvent.MOUSE_DRAGGED:
+				me 		= (MouseEvent) e;
+				reply 	= widget.onMouseDrag(me.getX(), me.getY(), me.getButton());
+			break;			
+			case MouseEvent.MOUSE_ENTERED: 	
+				me 		= (MouseEvent) e;
+				reply 	= widget.onMouseEnter(me.getX(), me.getY(), me.getButton());
+			break;
+			case MouseEvent.MOUSE_EXITED: 	
+				me 		= (MouseEvent) e;
+				reply 	= widget.onMouseLeave(me.getX(), me.getY(), me.getButton());
+			break;
+			case MouseEvent.MOUSE_MOVED: 	
+				me 		= (MouseEvent) e;
+				reply 	= widget.onMouseMove(me.getX(), me.getY(), me.getButton());
+			break;
+			case MouseWheelEvent.WHEEL_UNIT_SCROLL:
+			case MouseWheelEvent.MOUSE_WHEEL:	
+				mw 		= (MouseWheelEvent) e;
+				reply 	= widget.onMouseWheel(mw.getX(), mw.getY(), mw.getButton(), mw.getWheelRotation());
+			break;
+			case KeyEvent.KEY_PRESSED: 	
+				ke 		= (KeyEvent) e;
+				reply 	= widget.onKeyDown(ke.getKeyChar(), ke.getKeyCode());
+			break;
+			case WindowEvent.WINDOW_CLOSING:
+				we 		= (WindowEvent) e;
+				reply	= widget.onWindowClose();
+			break;
+			case WindowEvent.WINDOW_CLOSED:
+				we 		= (WindowEvent) e;				
+				reply	= widget.onWindowQuit();
+			break;
+			case ComponentEvent.COMPONENT_RESIZED:
+				ce 		= (ComponentEvent) e;				
+	//			reply	= widget.onWindowResize();				
+			default:
+				puts("unhandled event", e);
+			break;			
+			}
+			
+			if (reply != null && reply == Handler.Status.QUIT) {
+				this.dispose();
 			}
 		}
 		
-		public jadtgl.Platform.Window draw() {	
-			if(buffer == null) return this; 
+		public jadtgl.Window draw() {	
 			if(!this.isDisplayable()) return this;
-			if (widget == null) return this;
-			Graphics2D g = (Graphics2D) buffer.getDrawGraphics();
-			puts("Draw", g);
-			Graphics graphics = this.graphics(); 
+			if (widget == null) return this;			
+			Graphics graphics = this.graphics();
 			widget.drawAll(graphics);
-			buffer.show();
-			puts("Draw OK");
-			g.dispose();
 			return this;
 		}
 
@@ -85,49 +145,27 @@ implements jadtgl.Platform.Window {
 	
 	@Override
 	public boolean active() {
-		// TODO Auto-generated method stub
-		return false;
+		return this.isDisplayable();
 	}
 
 	@Override
 	public Color color(int r, int g, int b) {
-		// TODO Auto-generated method stub
-		return null;
+		return new jadtgl.awt.Color(r, g, b, 255);
 	}
 
 	@Override
-	public Color color(int r, int g, int b, int a) {
-		// TODO Auto-generated method stub
-		return null;
+	public Color color(int r, int g, int b, int a) { 
+		return new jadtgl.awt.Color(r, g, b, a);
 	}
 
 	@Override
-	public Font defaultfont(int size) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Font font(String fontname, int size) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String[] fontnames() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Graphics graphics() {
-		// TODO Auto-generated method stub
-		return null;
+	public Graphics graphics() {		
+		return graphics;
 	}
 
 
 	@Override
-	public jadtgl.Platform.Window update() {
+	public jadtgl.Window update() {
 		// TODO Auto-generated method stub
 		return null;
 	}

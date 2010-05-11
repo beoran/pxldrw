@@ -1,9 +1,11 @@
 package jadtgl.awt;
 
+
+
 import java.awt.AWTEvent;
 
 public class Event extends AWTEvent 
-implements jadtgl.Platform.Event {
+implements jadtgl.Event {
 	/**
 	 * 
 	 */
@@ -38,7 +40,7 @@ implements jadtgl.Platform.Event {
 	}
 
 	@Override
-	public jadtgl.Platform.Event eat() {
+	public jadtgl.Event eat() {
 		// TODO Auto-generated method stub
 		return null;
 	}
