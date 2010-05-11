@@ -4,15 +4,9 @@ A pixel art drawing and editing program.
 
 Copyright (C) 2010 beoran@rubyforge.org
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of version 3 of the GNU General Public License as 
-published by the Free Software Foundation.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
+This program is licensed under the zlib license. See the LICENSE
+file for more info. I chose this license to try and stay out of the license
+quagmire of GPL2 vs GPL3, etc that surrounds some aspects of open source Java
+implementations. Basically it means you an use and modify it as you like as
+long as you aknowledge that it was I who did (most of) the work.
 

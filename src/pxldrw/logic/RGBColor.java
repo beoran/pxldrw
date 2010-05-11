@@ -43,9 +43,24 @@ public class RGBColor implements Color {
         return awtgray;
     }
     
-    @Override
+
     public String toString() {
         return String.format("RGBColor: %d %d %d (AWT: %s)", r, g, b, awt.toString());
     }
+
+
+	public int B() {
+		return b;
+	}
+
+
+	public int G() {
+		return g;
+	}
+
+
+	public int R() {
+		return r;
+	}
 
 }

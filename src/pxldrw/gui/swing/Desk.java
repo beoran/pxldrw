@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package pxldrw.gui;
+package pxldrw.gui.swing;
 
 import javax.swing.*;
 import java.awt.*;
@@ -41,7 +41,7 @@ public class Desk extends JDesktopPane {
     public Desk() {
         super();
         this.setSize(640, 480);
-        this.setDesktopManager(Manager.make());
+        //this.setDesktopManager(Manager.make());
         this.setForeground(Color.white);
         this.setBackground(Color.black);
     }

@@ -14,4 +14,7 @@ public interface Color {
     java.awt.Color awt();
     /** Transforms color to an AWT color for display. May be grayscaled if grayscale is true. */
     java.awt.Color awt(boolean grayscale);
+    int G();
+    int B();
+	int R();
 }
