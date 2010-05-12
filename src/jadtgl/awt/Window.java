@@ -103,7 +103,6 @@ implements jadtgl.Window {
 				me 		= (MouseEvent) e;
 				reply 	= widget.onMouseMove(me.getX(), me.getY(), me.getButton());
 			break;
-			case MouseWheelEvent.WHEEL_UNIT_SCROLL:
 			case MouseWheelEvent.MOUSE_WHEEL:	
 				mw 		= (MouseWheelEvent) e;
 				reply 	= widget.onMouseWheel(mw.getX(), mw.getY(), mw.getButton(), mw.getWheelRotation());
